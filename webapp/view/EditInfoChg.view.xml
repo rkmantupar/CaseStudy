@@ -57,9 +57,6 @@
             </headerToolbar>
             
             <VBox id="idVBoxSkills1" class="sapUiSmallMargin">
-                <!-- Responsive Table
-                <Table id="skillsTable1" mode="MultiSelect" items="{/skills}" class="sapUiResponsiveMargin" growing="true"> -->
-
                 <Table id="skillsTable1" mode="MultiSelect" items="{SkillsEditModel>/skills}" class="sapUiResponsiveMargin" growing="true">
                 <columns>
                     <Column id="idColumnSkill1">
@@ -82,7 +79,6 @@
 
             </VBox>
 
-            <!-- Add Skill Dialog -->
             <Dialog id="addSkillDialog1" title="Add Skill" draggable="true" resizable="true" contentWidth="300px" contentHeight="auto" >
 
                 <VBox id="idVboxSkillProf1" class="sapUiSmallMargin">

@@ -8,20 +8,11 @@ sap.ui.define([
   /**
    * @param {typeof sap.ui.core.mvc.Controller} Controller
    */
-  function (Controller, MessageToast, History, MessageBox, JSONModel) {
+  function (Controller, MessageToast, History, MessageBox,) {
     "use strict";
 
     return Controller.extend("sapips.training.employeeapp.controller.CreateInfo", {
       onInit: function () {
-        //var oModel = new sap.ui.model.json.JSONModel({
-        //  skills: []
-        //});
-        //this.getView().setModel(oModel);
-
-        // Get the router object
-        //var oRouter = this.getOwnerComponent().getRouter();
-        //oRouter.getRoute("RouteCreatePage").attachPatternMatched(this._onObjectMatched, this);
-
         var oModel = new sap.ui.model.json.JSONModel({
           FirstName: "",
           LastName: "",

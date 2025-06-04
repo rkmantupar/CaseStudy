@@ -100,7 +100,6 @@ sap.ui.define([
     onPressAdd: function () {
       var oRouter = this.getOwnerComponent().getRouter();
       oRouter.navTo("RouteCreatePage", {
-
       });
     },
 

@@ -2,8 +2,6 @@
     <Page id="EmployeeList" title="{i18n>title}">
         <Panel id="idPanel1" headerText="{i18n>employees}" class="sapUiResponsiveMargin" width="auto">
             <VBox id="idVBoxSelector"> 
-                <!--<Table id="idTableEmployees" inset="false" showSeparators="Inner" headerText="{i18n>employees}"
-                         items="{path: 'Northwind>/Employees', sorter:{path: 'EmployeeID'}}" mode="MultiSelect" selectionChange="onSelectProduct"> -->
                 <Table id="idTableEmployees" inset="false" showSeparators="Inner" headerText="{i18n>employees}"
                          items="{Northwind>/Employees}" mode="MultiSelect" selectionChange="onSelectProduct">
                     <headerToolbar>

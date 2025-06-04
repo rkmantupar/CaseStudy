@@ -21,27 +21,6 @@ sap.ui.define([
       },
 
       _onObjectMatched: function (oEvent) {
-        //var sData = decodeURIComponent(oEvent.getParameter("arguments").data);
-        //var oData = JSON.parse(sData);
-
-        /*var sData = oEvent.getParameter("arguments").data;
-        var oDecodedData = JSON.parse(decodeURIComponent(sData));
-
-        if (oDecodedData.DateHire) {
-          oDecodedData.DateHire = new Date(oDecodedData.DateHire);
-        }
-
-        var oModel = new sap.ui.model.json.JSONModel(oDecodedData);
-        this.getView().setModel(oModel, "EmpEditModel");*/
-
-        //if (oData.DateHire) {
-        //  oData.DateHire = new Date(oData.DateHire);
-        //}
-
-        // Set to a local model to bind to Input fields
-        //var oModel = new sap.ui.model.json.JSONModel(oData);
-        //this.getView().setModel(oModel, "EmpEditModel");
-
         this._aDeletedSkills = [];  // reset on each load
 
         var sData = oEvent.getParameter("arguments").data;
@@ -109,37 +88,6 @@ sap.ui.define([
           oInput.setValue("90");
         }
       },
-
-      /*onPressSave: function () {
-        var oView = this.getView();
-
-        // Get the edited data
-        var oUpdatedData = oView.getModel("EmpEditModel").getData();
-
-        // OPTIONAL: validate required fields
-        if (!oUpdatedData.FirstName || !oUpdatedData.LastName) {
-          MessageBox.error("Please fill in all required fields.");
-          return;
-        }
-
-        // OPTIONAL: Clean or cast data
-        oUpdatedData.CareerLevel = String(oUpdatedData.CareerLevel); // Ensure it matches backend type
-
-        // Assuming you have an OData model named "Northwind" set in your Component
-        var oModel = this.getOwnerComponent().getModel("Northwind");
-
-        var sPath = `/Employees('${oUpdatedData.EmployeeID}')`; // Your entity key
-
-        oModel.update(sPath, oUpdatedData, {
-          success: function () {
-            MessageToast.show("Employee data saved successfully.");
-          },
-          error: function (oError) {
-            MessageBox.error("Error saving data. Check console.");
-            console.error(oError);
-          }
-        });
-      }*/
 
       onPressSave: function () {
         var oView = this.getView();

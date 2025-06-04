@@ -29,11 +29,6 @@ sap.ui.define([
                 this.getView().setModel(oEmpModel, "empModel");
 
                 // 3. Load Skills.json
-                /* var oSkillsModel = new sap.ui.model.json.JSONModel();
-                var sSkillsPath = "/localService/mainService/data/Skills.json";
-                console.log("Loading Skills JSON from:", sSkillsPath); 
-
-                oSkillsModel.loadData(sSkillsPath);*/
                 var oODataModel = this.getOwnerComponent().getModel("Northwind");
                 var sEmployeeID = oDecodedData.EmployeeID;
 
@@ -110,15 +105,6 @@ sap.ui.define([
 
             //Navigate Employee Information
             onPressEdit: function () {
-                //const oData = this.getView().getModel("empModel").getData(); // use the correct model name!
-                //this.getOwnerComponent().getRouter().navTo("RouteEditInfoPage", {
-                //  data: encodeURIComponent(JSON.stringify(oData))
-
-                ////var oData = this.getView().getModel("empModel").getData();
-
-                //this.getOwnerComponent().getRouter().navTo("RouteEditInfoPage", {
-                //    data: encodeURIComponent(JSON.stringify(oData))
-
                 var oEmpData = this.getView().getModel("empModel").getData();
                 var aSkillsData = this.getView().getModel("skillsModel")?.getData() || [];
 

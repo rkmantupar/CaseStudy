@@ -20,9 +20,7 @@
                 <Text id="idTextEmpCarLvl" text="{= 'CL' + ${empModel>/CareerLevel}}"/>
             </form:SimpleForm>
 
-            <!-- Dynamic Panel Container -->
             <VBox id="panelContainer" class="sapUiMediumMarginTop" >
-                <!-- Navigation Buttons -->
                 <HBox id="panelContainer2" justifyContent="Start" class="sapUiSmallMarginTop">
                     <Button id="idButtonEmployeeInfo" text="{i18n>empInfo}" press="onPressEmployeeInfo" class="customInfoNavButton"/>
                     <Button id="idButtonSkills" text="{i18n>skills}" press="onPressSkills" class="customInfoNavButton"/>
