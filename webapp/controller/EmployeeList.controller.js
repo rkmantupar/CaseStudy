@@ -10,6 +10,7 @@ sap.ui.define([
   return Controller.extend("sapips.training.employeeapp.controller.EmployeeList", {
     onInit() {
       this._Page = this.byId("idEmployeeList");
+
     },
 
     //Filter Search Bar
@@ -18,16 +19,30 @@ sap.ui.define([
       const sQuery = oEvent.getParameter("query");
 
       if (sQuery) {
+        const aSubFilters = [
+          new Filter("EmployeeID", FilterOperator.Contains, sQuery),
+          new Filter("FirstName", FilterOperator.Contains, sQuery),
+          new Filter("LastName", FilterOperator.Contains, sQuery),
+          new Filter("CareerLevel", FilterOperator.Contains, sQuery),
+          new Filter("CurrentProject", FilterOperator.Contains, sQuery)
+        ];
+
+        // Filter Age if query is a number
+        if (!isNaN(sQuery)) {
+          aSubFilters.push(new Filter("Age", FilterOperator.EQ, parseInt(sQuery)));
+        }
+
+        // Filter HireDate if query looks like a date
+        const oParsedDate = new Date(sQuery);
+        if (!isNaN(oParsedDate.getTime())) {
+          // Format to match backend (assuming 'yyyy-MM-dd')
+          const sFormattedDate = oParsedDate.toISOString().split("T")[0];
+          aSubFilters.push(new Filter("HireDate", FilterOperator.EQ, sFormattedDate));
+        }
+
         aFilter.push(new Filter({
-          filters: [
-            new Filter("FirstName", FilterOperator.Contains, sQuery),
-            new Filter("LastName", FilterOperator.Contains, sQuery),
-            //*************new Filter("Age", FilterOperator.Contains, sQuery),
-            //*************new Filter("HireDate", FilterOperator.Contains, sQuery),
-            new Filter("CareerLevel", FilterOperator.Contains, sQuery),
-            new Filter("CurrentProject", FilterOperator.Contains, sQuery)
-          ],
-          and: false  // false = OR, true = AND
+          filters: aSubFilters,
+          and: false // OR logic
         }));
       }
 
@@ -37,6 +52,8 @@ sap.ui.define([
       oBinding.filter(aFilter);
     },
 
+   
+
     //Delete Button Main Page
     onPressDelete: function () {
       var oTable = this.byId("idTableEmployees");
@@ -44,7 +61,7 @@ sap.ui.define([
       var oModel = this.getView().getModel("Northwind");
 
       if (aSelectedItems.length === 0) {
-        MessageToast.show("No employees selected");
+        MessageToast.show("No employees selected. Please select at least 1.");
         return;
       }
 

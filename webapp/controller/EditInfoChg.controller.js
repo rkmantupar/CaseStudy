@@ -89,7 +89,7 @@ sap.ui.define([
         }
       },
 
-      onPressSave: function () {
+      /*onPressSave: function () {
         var oView = this.getView();
         var oModel = this.getOwnerComponent().getModel("Northwind");
         var oUpdatedData = oView.getModel("EmpEditModel").getData();
@@ -145,7 +145,83 @@ sap.ui.define([
             console.error(oError);
           }
         });
+      },*/
+
+      onPressSave: function () {
+        var oView = this.getView();
+        var oModel = this.getOwnerComponent().getModel("Northwind");
+        var oUpdatedData = oView.getModel("EmpEditModel").getData();
+        var sEmpID = oUpdatedData.EmployeeID;
+        var sEmpPath = `/Employees('${sEmpID}')`;
+
+        var aSkills = oView.getModel("SkillsEditModel").getProperty("/skills") || [];
+
+        // 🔎 Validate employee fields
+        if (!oUpdatedData.FirstName?.trim() ||
+          !oUpdatedData.LastName?.trim() ||
+          !oUpdatedData.Age ||
+          !oUpdatedData.CareerLevel ||
+          !oUpdatedData.CurrentProject ||
+          !oUpdatedData.DateHire) {
+          MessageToast.show("Please fill in all employee details before saving.");
+          return;
+        }
+
+        // 🔎 Validate at least one skill
+        if (aSkills.length === 0) {
+          MessageToast.show("Employee must have at least one skill.");
+          return;
+        }
+
+        oUpdatedData.CareerLevel = String(oUpdatedData.CareerLevel);
+
+        var that = this;
+
+        // ✅ Save employee to backend
+        oModel.update(sEmpPath, oUpdatedData, {
+          success: function () {
+            MessageToast.show("Employee data saved successfully.");
+
+            // 🧹 Delete all current skills before re-saving (if applicable)
+            oModel.read(`/Skills?$filter=EmployeeID eq '${sEmpID}'`, {
+              success: function (oData) {
+                var aExistingSkills = oData.results || [];
+                var iDeleted = 0;
+
+                if (aExistingSkills.length === 0) {
+                  that._createAllSkills();
+                  return;
+                }
+
+                aExistingSkills.forEach(function (skill) {
+                  var sSkillPath = `/Skills(EmployeeID='${sEmpID}',SkillName='${encodeURIComponent(skill.SkillName)}')`;
+                  oModel.remove(sSkillPath, {
+                    success: function () {
+                      iDeleted++;
+                      if (iDeleted === aExistingSkills.length) {
+                        that._createAllSkills();
+                      }
+                    },
+                    error: function (oError) {
+                      console.error("Error deleting skill:", skill.SkillName, oError);
+                      MessageBox.error("Failed to delete existing skill: " + skill.SkillName);
+                    }
+                  });
+                });
+              },
+              error: function (oError) {
+                console.error("Error reading skills", oError);
+                MessageBox.error("Failed to read existing skills.");
+              }
+            });
+          },
+          error: function (oError) {
+            MessageBox.error("Error saving employee data.");
+            console.error(oError);
+          }
+        });
       },
+
 
       // Create all current skills from the SkillsEditModel
       _createAllSkills: function () {
@@ -174,7 +250,7 @@ sap.ui.define([
 
         // Clear temporary deletions
         this._aDeletedSkills = [];
-      }, 
+      },
 
       onPressAddSkill: function () {
         var oView = this.getView();
@@ -263,6 +339,18 @@ sap.ui.define([
             }
           }.bind(this)
         });
+      },
+
+      onPressCanc: function () {
+        var oHistory = History.getInstance();
+        var sPreviousHash = oHistory.getPreviousHash();
+        var oRouter = this.getOwnerComponent().getRouter();
+
+        if (sPreviousHash !== undefined) {
+          window.history.go(-1);
+        } else {
+          oRouter.navTo("RouteEditPage", {}, true);
+        }
       }
 
     });

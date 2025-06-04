@@ -4,6 +4,7 @@
             <VBox id="idVBoxSelector"> 
                 <Table id="idTableEmployees" inset="false" showSeparators="Inner" headerText="{i18n>employees}"
                          items="{Northwind>/Employees}" mode="MultiSelect" selectionChange="onSelectProduct">
+                         
                     <headerToolbar>
                         <Toolbar id="idToolbar">
                             <ToolbarSpacer id="idToolbarSpacer" />

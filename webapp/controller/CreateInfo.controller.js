@@ -287,24 +287,46 @@ sap.ui.define([
 
               console.log("Posting skill data:", oSkillData);
 
-              oNorthwindModel.create("/Skills", oSkillData, {
-                success: function () {
-                  iSuccessCount++;
-                  if (iSuccessCount === iTotalSkills) {
-                    // Only navigate once all skills are added
-                    var oRouter = that.getOwnerComponent().getRouter();
-                    oRouter.navTo("RouteEmployeeList");
-                  }
-                },
-                error: function () {
-                  MessageBox.error("Error saving skill: " + skill.skill);
-                  console.error("Error saving skill:", skill.skill, oError);
-                }
-              });
+              oNorthwindModel.create("/Skills", oSkillData)
             });
 
-            //var oRouter = this.getOwnerComponent().getRouter();
-            //oRouter.navTo("RouteEmployeeList");
+            // Reset form fields
+            var oModel = that.getView().getModel();
+            oModel.setData({
+              FirstName: "",
+              LastName: "",
+              Age: "",
+              CareerLevel: "",
+              CurrentProject: "",
+              DateHire: null,
+              skills: []
+            });
+
+            // Reset control states
+            var aControls = that.getView().findAggregatedObjects(true, function (oControl) {
+              return oControl.isA("sap.m.Input") ||
+                oControl.isA("sap.m.TextArea") ||
+                oControl.isA("sap.m.DatePicker") ||
+                oControl.isA("sap.m.ComboBox");
+            });
+
+            aControls.forEach(function (oControl) {
+              if (oControl.isA("sap.m.ComboBox")) {
+                oControl.setSelectedKey("");
+              } else if (oControl.isA("sap.m.DatePicker")) {
+                oControl.setDateValue(null);
+              } else {
+                oControl.setValue("");
+              }
+              oControl.setValueState("None");
+            });
+
+            // Delay navigation until after clear
+            setTimeout(function () {
+              var oRouter = that.getOwnerComponent().getRouter();
+              oRouter.navTo("RouteEmployeeList");
+            }, 500); // 0.5s delay just for UX polish
+
           }.bind(this),
           error: function (oError) {
             MessageBox.error("Error creating employee.");
@@ -312,6 +334,81 @@ sap.ui.define([
           }
         });
 
+      },
+
+      onPressCanc: function () {
+        var oHistory = History.getInstance();
+        var sPreviousHash = oHistory.getPreviousHash();
+        var oRouter = this.getOwnerComponent().getRouter();
+        var oView = this.getView();
+
+        // Find all inputs, textareas, datepickers, comboboxes
+        var aControls = oView.findAggregatedObjects(true, function (oControl) {
+          return oControl.isA("sap.m.Input") ||
+            oControl.isA("sap.m.TextArea") ||
+            oControl.isA("sap.m.DatePicker") ||
+            oControl.isA("sap.m.ComboBox");
+        });
+
+        // Check if any control has a value set
+        var bHasValue = aControls.some(function (oControl) {
+          if (oControl.isA("sap.m.ComboBox")) {
+            // For ComboBox, check selectedKey or selectedItem
+            return oControl.getSelectedKey() !== "";
+          } else if (oControl.isA("sap.m.DatePicker")) {
+            // For DatePicker, check date value
+            return oControl.getDateValue() !== null;
+          } else {
+            // For Input/TextArea, check text value
+            return oControl.getValue().trim() !== "";
+          }
+        });
+
+        if (bHasValue) {
+          sap.m.MessageBox.confirm("Some fields have values. Are you sure you want to clear?", {
+            onClose: function (sAction) {
+              if (sAction === "OK") {
+                aControls.forEach(function (oControl) {
+                  if (oControl.isA("sap.m.ComboBox")) {
+                    oControl.setSelectedKey("");
+                  } else if (oControl.isA("sap.m.DatePicker")) {
+                    oControl.setDateValue(null);
+                  } else {
+                    oControl.setValue("");
+                  }
+                  oControl.setValueState("None");
+                });
+
+                var oModel = oView.getModel();
+                oModel.setProperty("/skills", []);
+
+                if (sPreviousHash !== undefined) {
+                  window.history.go(-1);
+                } else {
+                  oRouter.navTo("RouteMainView", {}, true);
+                }
+              }
+            }
+          });
+        } else {
+          // No values, clear immediately
+          aControls.forEach(function (oControl) {
+            if (oControl.isA("sap.m.ComboBox")) {
+              oControl.setSelectedKey("");
+            } else if (oControl.isA("sap.m.DatePicker")) {
+              oControl.setDateValue(null);
+            } else {
+              oControl.setValue("");
+            }
+            oControl.setValueState("None");
+
+            if (sPreviousHash !== undefined) {
+              window.history.go(-1);
+            } else {
+              oRouter.navTo("RouteMainView", {}, true);
+            }
+          });
+        }
       }
 
     });

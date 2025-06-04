@@ -105,8 +105,8 @@
         <footer>
             <OverflowToolbar id="idOFTFooterReview1">
                 <ToolbarSpacer id="idTSpacerFooterReview1"/>
-                <Button id="idBtnSave1" type="Default" text="{i18n>saveBtn}" press="onPressSave" class="customSaveButton"/>
-                <Button id="idBtnCanc1" text="{i18n>cancBtn}" press="onPressCanc" class="customCancelButton"/>
+                <Button id="idBtnSave1" type="Default" text="{i18n>updateEmp}" press="onPressSave" class="customSaveButton"/>
+                <Button id="idBtnCanc1" text="{i18n>backBtn}" press="onPressCanc" class="customCancelButton"/>
             </OverflowToolbar>
         </footer>
     </Page>

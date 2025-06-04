@@ -82,7 +82,7 @@
             <OverflowToolbar id="idOFTFooterReview2">
                 <ToolbarSpacer id="idTSpacerFooterReview2"/>
                 <Button id="idBtnEdit" text="{i18n>editBtn}" tooltip="{i18n>backTooltip}" press="onPressEdit" class="customButtonTextColor"/>
-                <Button id="idBtnBack2" text="{i18n>backBtn}" tooltip="{i18n>backTooltip}" press="onPressBack" class="customButtonTextColor"/>
+                <Button id="idBtnBack2" text="{i18n>cancBtn}" tooltip="{i18n>backTooltip}" press="onPressBack" class="customButtonTextColor"/>
             </OverflowToolbar>
         </footer>
     </Page>
