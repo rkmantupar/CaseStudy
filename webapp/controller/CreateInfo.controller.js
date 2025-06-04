@@ -1,0 +1,300 @@
+sap.ui.define([
+  "sap/ui/core/mvc/Controller",
+  "sap/m/MessageToast",
+  "sap/ui/core/routing/History",
+  'sap/m/MessageBox',
+  "sap/ui/model/json/JSONModel",
+],
+  /**
+   * @param {typeof sap.ui.core.mvc.Controller} Controller
+   */
+  function (Controller, MessageToast, History, MessageBox, JSONModel) {
+    "use strict";
+
+    return Controller.extend("sapips.training.employeeapp.controller.CreateInfo", {
+      onInit: function () {
+        //var oModel = new sap.ui.model.json.JSONModel({
+        //  skills: []
+        //});
+        //this.getView().setModel(oModel);
+
+        // Get the router object
+        //var oRouter = this.getOwnerComponent().getRouter();
+        //oRouter.getRoute("RouteCreatePage").attachPatternMatched(this._onObjectMatched, this);
+
+        var oModel = new sap.ui.model.json.JSONModel({
+          FirstName: "",
+          LastName: "",
+          Age: "",
+          CareerLevel: "",
+          CurrentProject: "",
+          DateHire: null,
+          skills: []
+        });
+        this.getView().setModel(oModel);
+
+        var oRouter = this.getOwnerComponent().getRouter();
+        oRouter.getRoute("RouteCreatePage").attachPatternMatched(this._onObjectMatched, this);
+      },
+
+      // Go back to Main Page
+      onPressBack: function () {
+        var oHistory = History.getInstance();
+        var sPreviousHash = oHistory.getPreviousHash();
+        var oRouter = this.getOwnerComponent().getRouter();
+        var oView = this.getView();
+
+        // Find all inputs, textareas, datepickers, comboboxes
+        var aControls = oView.findAggregatedObjects(true, function (oControl) {
+          return oControl.isA("sap.m.Input") ||
+            oControl.isA("sap.m.TextArea") ||
+            oControl.isA("sap.m.DatePicker") ||
+            oControl.isA("sap.m.ComboBox");
+        });
+
+        // Check if any control has a value set
+        var bHasValue = aControls.some(function (oControl) {
+          if (oControl.isA("sap.m.ComboBox")) {
+            // For ComboBox, check selectedKey or selectedItem
+            return oControl.getSelectedKey() !== "";
+          } else if (oControl.isA("sap.m.DatePicker")) {
+            // For DatePicker, check date value
+            return oControl.getDateValue() !== null;
+          } else {
+            // For Input/TextArea, check text value
+            return oControl.getValue().trim() !== "";
+          }
+        });
+
+        if (bHasValue) {
+          sap.m.MessageBox.confirm("Some fields have values. Are you sure you want to clear?", {
+            onClose: function (sAction) {
+              if (sAction === "OK") {
+                aControls.forEach(function (oControl) {
+                  if (oControl.isA("sap.m.ComboBox")) {
+                    oControl.setSelectedKey("");
+                  } else if (oControl.isA("sap.m.DatePicker")) {
+                    oControl.setDateValue(null);
+                  } else {
+                    oControl.setValue("");
+                  }
+                  oControl.setValueState("None");
+                });
+
+                var oModel = oView.getModel();
+                oModel.setProperty("/skills", []);
+
+                if (sPreviousHash !== undefined) {
+                  window.history.go(-1);
+                } else {
+                  oRouter.navTo("RouteMainView", {}, true);
+                }
+              }
+            }
+          });
+        } else {
+          // No values, clear immediately
+          aControls.forEach(function (oControl) {
+            if (oControl.isA("sap.m.ComboBox")) {
+              oControl.setSelectedKey("");
+            } else if (oControl.isA("sap.m.DatePicker")) {
+              oControl.setDateValue(null);
+            } else {
+              oControl.setValue("");
+            }
+            oControl.setValueState("None");
+
+            if (sPreviousHash !== undefined) {
+              window.history.go(-1);
+            } else {
+              oRouter.navTo("RouteMainView", {}, true);
+            }
+          });
+        }
+      },
+
+      // Date of Hire
+      onDateChange: function (oEvent) {
+        var sNewDate = oEvent.getParameter("value"); // e.g. "2025-05-31"
+        sap.m.MessageToast.show("Selected: " + sNewDate);
+      },
+
+      // Restricts user using only Letters
+      onLetterInputLiveChange: function (oEvent) {
+        var oInput = oEvent.getSource();
+        var sValue = oInput.getValue();
+
+        // Remove all non-alphabetical characters
+        var sFiltered = sValue.replace(/[^a-zA-Z]/g, "");
+
+        if (sValue !== sFiltered) {
+          oInput.setValue(sFiltered);
+        }
+      },
+
+      // Restricts user using only Numbers from 0 to 90
+      onNumberInputLiveChange: function (oEvent) {
+        var oInput = oEvent.getSource();
+        var sValue = oInput.getValue();
+
+        // Remove non-digit characters
+        var sFiltered = sValue.replace(/[^0-9]/g, "");
+
+        if (sValue !== sFiltered) {
+          oInput.setValue(sFiltered);
+          return; // Wait for next input
+        }
+
+        var iNumber = parseInt(sFiltered, 10);
+
+        // If number is out of range or NaN, reset or limit
+        if (isNaN(iNumber)) {
+          oInput.setValue("");
+        } else if (iNumber > 90) {
+          oInput.setValue("90");
+        }
+      },
+
+      /*--------------------------------------------------------
+          *Skills/Proficiency
+      ----------------------------------------------------------*/
+      onPressAddSkill: function () {
+        // Reset dialog fields
+        this.byId("skillInput").setSelectedKey("");
+        this.byId("proficiencyInput").setSelectedKey("");
+
+        this.byId("addSkillDialog").open();
+      },
+
+      onDialogCancel: function () {
+        this.byId("addSkillDialog").close();
+      },
+
+      onDialogSave: function () {
+        var sSkill = this.byId("skillInput").getSelectedKey();
+        var sProficiency = this.byId("proficiencyInput").getSelectedKey();
+
+        if (!sSkill || !sProficiency) {
+          MessageToast.show("Please select both skill and proficiency.");
+          return;
+        }
+
+        var oModel = this.getView().getModel();
+        var aSkills = oModel.getProperty("/skills") || [];
+
+        // Optionally prevent duplicates
+        var bExists = aSkills.some(function (item) {
+          return item.skill === sSkill;
+        });
+
+        if (bExists) {
+          MessageToast.show("Skill already exists.");
+          return;
+        }
+
+        // Add new skill
+        aSkills.push({ skill: sSkill, proficiency: sProficiency });
+        oModel.setProperty("/skills", aSkills);
+
+        this.byId("addSkillDialog").close();
+        MessageToast.show("Skill added.");
+      },
+
+      onPressDelSkill: function () {
+        var oTable = this.byId("skillsTable");
+        var aSelectedItems = oTable.getSelectedItems();
+        var oModel = this.getView().getModel();
+        var aSkills = oModel.getProperty("/skills");
+
+        if (aSelectedItems.length === 0) {
+          MessageToast.show("Please select a skill to delete.");
+          return;
+        }
+
+        aSelectedItems.forEach(function (oItem) {
+          var sSkill = oItem.getBindingContext().getObject().skill;
+
+          // Remove from data model
+          aSkills = aSkills.filter(function (item) {
+            return item.skill !== sSkill;
+          });
+        });
+
+        oModel.setProperty("/skills", aSkills);
+        oTable.removeSelections();
+
+        MessageToast.show("Selected skill(s) deleted.");
+      },
+
+      onPressSave: function () {
+        var oView = this.getView();
+        var oNorthwindModel = this.getOwnerComponent().getModel("Northwind");
+
+        // Collect values from inputs
+        var sFirstName = oView.byId("idInputFirstName").getValue().trim();
+        var sLastName = oView.byId("idInputLastName").getValue().trim();
+        var sAge = parseInt(oView.byId("idInputAge").getValue().trim(), 10);
+        var sCareerLevel = oView.byId("idComboBoxCareerLevel").getSelectedKey();
+        var sCurrentProject = oView.byId("idComboBoxCurrentProject").getSelectedKey();
+        //var oDate = oView.byId("idDatePickerDateOfHire").getDateValue();
+        var sDate = oView.byId("idDatePickerDateOfHire").getDateValue();
+
+        if (!sFirstName || !sLastName || isNaN(sAge) || !sCareerLevel || !sCurrentProject || !sDate) {
+          MessageBox.error("Please fill all required fields correctly.");
+          return;
+        }
+
+        var oNewEmployee = {
+          //EmployeeID: 
+          FirstName: sFirstName,
+          LastName: sLastName,
+          Age: sAge,
+          CareerLevel: sCareerLevel,
+          CurrentProject: sCurrentProject,
+          //DateHire: oDate.toISOString() // Format date to string
+          DateHire: sDate,
+        };
+
+        //console.log("New Employee Payload:", oNewEmployee);
+
+        // Call create method on OData model
+        var that = this;
+        oNorthwindModel.create("/Employees", oNewEmployee, {
+          success: function (oCreatedEmployee) {
+            MessageToast.show("Employee created successfully.");
+
+            var sEmployeeId = oCreatedEmployee.EmployeeID; // adapt key name!
+
+            // Get skills from JSONModel or from wherever your skills data source is
+            var aSkills = that.getView().getModel().getProperty("/skills") || [];
+
+            // Loop over each skill and create on backend linked to new employee
+            aSkills.forEach(function (skill) {
+              var oSkillData = {
+                EmployeeID: sEmployeeId,    // Link to employee
+                Skill: skill.skill,
+                Proficiency: skill.proficiency
+              };
+
+              oNorthwindModel.create("/SkillsSet", oSkillData, {
+                success: function () {
+                  // skill saved - optionally handle feedback
+                },
+                error: function () {
+                  MessageBox.error("Error saving skill: " + skill.skill);
+                }
+              });
+            });
+
+            var oRouter = this.getOwnerComponent().getRouter();
+                oRouter.navTo("RouteEmployeeList");
+              }.bind(this),
+                error: function (oError) {
+                  MessageBox.error("Error creating employee.");
+                  console.error(oError);
+                }
+        });
+          }
+
+        });
+      });

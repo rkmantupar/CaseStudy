@@ -1,0 +1,91 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:form="sap.ui.layout.form" controllerName="sapips.training.employeeapp.controller.EditInfo">
+    <Page id="EditPage" title="{i18n>empInfo}" floatingFooter="true" class="customHeaderFooter">
+        <customHeader>
+            <Bar id="idBarEditPage">
+                <contentLeft>
+                    <Button id="idContentLeftButton2" icon="sap-icon://nav-back" press="onPressBack"/>
+                </contentLeft>
+                
+                <contentMiddle>
+                    <Title id="idContentMiddleButton2" text="{i18n>createTitle}"/>
+                </contentMiddle>
+            </Bar>
+        </customHeader>
+
+       <Panel id="idPanelEditEmployee" headerText="{i18n>empInfo}" class="sapUiResponsiveMargin" width="auto">
+            <form:SimpleForm id="idSimpleForm1" layout="ResponsiveGridLayout" editable="false">
+                <Label id="idLabelEmpFullName" text="{= ${empModel>/FirstName} + ' ' + ${empModel>/LastName} }" class="bigText"/>
+                <ToolbarSpacer id="idTSpacerFooterReview3"/>
+                <Label id="idLabelEmpCarLvl" text="{i18n>careerLevel}"/>
+                <Text id="idTextEmpCarLvl" text="{= 'CL' + ${empModel>/CareerLevel}}"/>
+            </form:SimpleForm>
+
+            <!-- Dynamic Panel Container -->
+            <VBox id="panelContainer" class="sapUiMediumMarginTop" >
+                <!-- Navigation Buttons -->
+                <HBox id="panelContainer2" justifyContent="Start" class="sapUiSmallMarginTop">
+                    <Button id="idButtonEmployeeInfo" text="{i18n>empInfo}" press="onPressEmployeeInfo" class="customInfoNavButton"/>
+                    <Button id="idButtonSkills" text="{i18n>skills}" press="onPressSkills" class="customInfoNavButton"/>
+                </HBox>
+            </VBox>
+        </Panel>
+
+        <VBox id="contentContainer">
+            <Panel id="employeeInfoPanel" headerText="Employee Info" visible="true" class="sapUiResponsiveMargin" width="auto">
+                <form:SimpleForm id="idSimpleForm2" layout="ResponsiveGridLayout" editable="false">
+                    <Label id="idLableEmployeeIdView" text="{i18n>employeeId}"/>
+                    <Text id="idTextEmpIdView" text="{empModel>/EmployeeID}"/>
+
+                    <Label id="idLableFirstNameView" text="{i18n>firstName}"/>
+                    <Text id="idTextFirstNameView" text="{empModel>/FirstName}"/>
+                    
+                    <Label id="idLableLastNameView" text="{i18n>lastName}"/>
+                    <Text id="idTextLastnameView" text="{empModel>/LastName}"/>
+                    
+                    <Label id="idLableAgeView" text="{i18n>age}"/>
+                    <Text id="idTextAgeView" text="{empModel>/Age}"/>
+                    
+                    <Label id="idLableDateOfHireView" text="{i18n>dateOfHire}"/>
+                    <Text id="idTextDateOfHireView" text="{empModel>/DateHire}"/>
+                    
+                    <Label id="idLableCareerLevelView" text="{i18n>careerLevel}"/>
+                    <Text id="idTextCareerLevelView" text="{= 'CL' + ${empModel>/CareerLevel}}"/>
+
+                    <Label id="idLableCurrentProjectView" text="{i18n>currentProject}"/>
+                    <Text id="idTextCurrentProjView" text="{empModel>/CurrentProject}"/>
+                </form:SimpleForm>
+
+            </Panel>
+
+            <Panel id="skillsPanel" headerText="Skills" visible="false" class="sapUiResponsiveMargin" width="auto">
+               <Table id="idSkillsTable" items="{skillsModel>/}">
+                    <columns>
+                        <Column id="idColumnSkillView">
+                            <Text id="idTextSkillView" text="Skill"/>
+                        </Column>
+                        <Column id="idColumnProficiencyView">
+                            <Text id="idTextProficiencyView" text="Proficiency"/>
+                        </Column>
+                    </columns>
+                    <items>
+                        <ColumnListItem id="idColumnListItemView">
+                            <cells>
+                                <Text id="idTextSkillCell" text="{skillsModel>SkillName}"/>
+                                <Text id="idTextProficiencyCell"  text="{skillsModel>ProficiencyLevel}"/>
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+            </Panel>
+        </VBox>
+
+
+        <footer>
+            <OverflowToolbar id="idOFTFooterReview2">
+                <ToolbarSpacer id="idTSpacerFooterReview2"/>
+                <Button id="idBtnEdit" text="{i18n>editBtn}" tooltip="{i18n>backTooltip}" press="onPressEdit" class="customButtonTextColor"/>
+                <Button id="idBtnBack2" text="{i18n>backBtn}" tooltip="{i18n>backTooltip}" press="onPressBack" class="customButtonTextColor"/>
+            </OverflowToolbar>
+        </footer>
+    </Page>
+</mvc:View>

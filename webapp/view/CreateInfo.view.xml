@@ -1,0 +1,115 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:form="sap.ui.layout.form" controllerName="sapips.training.employeeapp.controller.CreateInfo">
+    <Page id="CreatePage" floatingFooter="true" class="customHeaderFooter">
+        <customHeader>
+            <Bar id="idBarCreatePage">
+                <contentLeft>
+                    <Button id="idContentLeftButton1" icon="sap-icon://nav-back" press="onPressBack" />
+                </contentLeft>
+                
+                <contentMiddle>
+                    <Title id="idContentMiddleButton1" text="{i18n>createTitle}" />
+                </contentMiddle>
+            </Bar>
+        </customHeader>
+
+        <headerContent>
+            <Button id="idBtnBack3" text="{i18n>backBtn}" tooltip="{i18n>backTooltip}" press="onPressBack" class="customButtonTextColor"/>
+        </headerContent>
+
+        <Panel id="idPanelCreateEmployee" headerText="{i18n>empInfo}" class="sapUiResponsiveMargin" width="auto">
+            <form:SimpleForm id="idSimpleFormEmployee" editable="true">
+                <Label id="idLableEmployeeId" text="{i18n>employeeId}" />
+                <Input id="idInputEmployeeId" value="{EmployeeID}" maxLength="50" required="false" editable="false" />
+
+                <Label id="idLableFirstName" text="{i18n>firstName}" />
+                <Input id="idInputFirstName" value="{/FirstName}" maxLength="32" required="true" placeholder="{i18n>enterValue}" liveChange="onLetterInputLiveChange"/>
+
+                <Label id="idLableLastName" text="{i18n>lastName}"/>
+                <Input id="idInputLastName" value="{/LastName}" maxLength="32" required="true" placeholder="{i18n>enterValue}" liveChange="onLetterInputLiveChange"/>
+                
+                <Label id="idLableAge" text="{i18n>age}"/>
+                <Input id="idInputAge" value="{/Age}"  maxLength="2" required="true" placeholder="{i18n>enterValue}" liveChange="onNumberInputLiveChange"/>
+
+                <Label id="idLableDateOfHire" text="{i18n>dateOfHire}"/>
+                <DatePicker id="idDatePickerDateOfHire" value="{/selectedDate}" required="true" displayFormat="yyyy-MM-dd" valueFormat="yyyy-MM-dd" placeholder="{i18n>enterValue}" change="onDateChange"/>
+
+                <Label id="idLableCareerLevel" text="{i18n>careerLevel}"/>
+                <ComboBox id="idComboBoxCareerLevel" items="{Northwind>/CareerList}" placeholder="{i18n>enterValue}" required="true">
+                    <core:Item id="idItemCareerLevel" key="{Northwind>CareerLevel}" text="{Northwind>CareerLevel}" />
+                </ComboBox>
+
+                <Label id="idLableCurrentProject" text="{i18n>currentProject}"/>
+                <ComboBox id="idComboBoxCurrentProject" items="{Northwind>/ProjectList}" required="true" placeholder="{i18n>enterValue}">
+                    <core:Item id="idItemCurrentProject" key="{Northwind>ProjectName}" text="{Northwind>ProjectName}" />
+                </ComboBox>
+            </form:SimpleForm>
+        </Panel>
+
+        <Panel id="idPanelAddSkills" class="sapUiResponsiveMargin" width="auto">
+            <headerToolbar>
+                <Toolbar id="idToolBar2">
+                    <Title id="idTitleSkills2" text="{i18n>skills}" />
+                    <ToolbarSpacer id="idToolBarSpace3"/>
+                    <Button id="idButtonAddSkill2" text="{i18n>add}" press="onPressAddSkill" class="customAddButton"/>
+                    <Button id="idButtonDelSkill2" text="{i18n>delete}" press="onPressDelSkill" class="customDeleteButton"/>
+                </Toolbar>
+            </headerToolbar>
+            
+            <VBox id="idVBoxSkills" class="sapUiSmallMargin">
+                <!-- Responsive Table -->
+                <Table id="skillsTable" mode="MultiSelect" items="{/skills}" class="sapUiResponsiveMargin" growing="true">
+
+                <columns>
+                    <Column id="idColumnSkill">
+                        <Text id="idTextSkill" text="Skill" />
+                    </Column>
+                    <Column id="idColumnProficiency">
+                        <Text id="idTextProficiency" text="Proficiency" />
+                    </Column>
+                </columns>
+
+                <items>
+                    <ColumnListItem id="idColumnListItemSkillProf">
+                        <cells>
+                            <Text id="idTextSkill2" text="{skill}" />
+                            <Text id="idTextProficiency2" text="{proficiency}" />
+                        </cells>
+                    </ColumnListItem>
+                </items>
+                </Table>
+
+            </VBox>
+
+            <!-- Add Skill Dialog -->
+            <Dialog id="addSkillDialog" title="Add Skill" draggable="true" resizable="true" contentWidth="300px" contentHeight="auto" >
+
+                <VBox id="idVboxSkillProf" class="sapUiSmallMargin">
+                    <Label id="idLabelSkill" text="Skill" />
+                    <ComboBox id="skillInput" items="{Northwind>/SkillList}" placeholder="{i18n>enterValue}" required="true">
+                        <core:Item id="idCoreSkillInput" key="{Northwind>SkillName}" text="{Northwind>SkillName}" />
+                    </ComboBox>
+
+                    <Label id="idLabelProficiency" text="Proficiency" />
+                    <ComboBox id="proficiencyInput" items="{Northwind>/ProficiencyList}" placeholder="{i18n>enterValue}" required="true">
+                        <core:Item id="idCoreProficiencyInput" key="{Northwind>ProficiencyLevel}" text="{Northwind>ProficiencyLevel}" />
+                    </ComboBox>
+                </VBox>
+
+                <beginButton>
+                    <Button id="idButtonSaveSkillProf" text="Save" press="onDialogSave" type="Emphasized" />
+                </beginButton>
+                <endButton>
+                    <Button id="idButtonCanSkillProf" text="Cancel" press="onDialogCancel" />
+                </endButton>
+            </Dialog>
+        </Panel>
+        
+        <footer>
+            <OverflowToolbar id="idOFTFooterReview">
+                <ToolbarSpacer id="idTSpacerFooterReview"/>
+                <Button id="idBtnSave" type="Default" text="{i18n>saveBtn}" press="onPressSave" class="customSaveButton"/>
+                <Button id="idBtnCanc" text="{i18n>cancBtn}" press="onPressCanc" class="customCancelButton"/>
+            </OverflowToolbar>
+        </footer>
+    </Page>
+</mvc:View>

@@ -1,0 +1,163 @@
+{
+  "_version": "1.65.0",
+  "sap.app": {
+    "id": "sapips.training.employeeapp",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "applicationVersion": {
+      "version": "0.0.1"
+    },
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}",
+    "resources": "resources.json",
+    "sourceTemplate": {
+      "id": "@sap/generator-fiori:basic",
+      "version": "1.17.6",
+      "toolsId": "7c4632c6-dbfc-420a-983f-ce9e07f66ffa"
+    },
+    "dataSources": {
+      "mainService": {
+        "uri": "/V3/Northwind/Northwind.svc",
+        "type": "OData",
+        "settings": {
+          "annotations": [],
+          "localUri": "localService/mainService/metadata.xml",
+          "odataVersion": "2.0"
+        }
+      }
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "icons": {
+      "icon": "",
+      "favIcon": "",
+      "phone": "",
+      "phone@2": "",
+      "tablet": "",
+      "tablet@2": ""
+    },
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "flexEnabled": true,
+    "dependencies": {
+      "minUI5Version": "1.136.1",
+      "libs": {
+        "sap.m": {},
+        "sap.ui.core": {}
+      }
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "sapips.training.employeeapp.i18n.i18n"
+        }
+      },
+      "Northwind": {
+        "dataSource": "mainService",
+        "preload": true,
+        "settings": {
+          "defaultBindingMode": "TwoWay"
+        },
+        "type": "sap.ui.model.odata.v2.ODataModel"
+      }
+    },
+    "resources": {
+      "css": [
+        {
+          "uri": "css/style.css"
+        }
+      ]
+    },
+    "routing": {
+      "config": {
+        "routerClass": "sap.m.routing.Router",
+        "controlAggregation": "pages",
+        "controlId": "app",
+        "transition": "slide",
+        "type": "View",
+        "viewType": "XML",
+        "path": "sapips.training.employeeapp.view",
+        "async": true,
+        "viewPath": "sapips.training.employeeapp.view"
+      },
+      "routes": [
+        {
+          "name": "RouteEmployeeList",
+          "pattern": ":?query:",
+          "target": [
+            "TargetEmployeeList"
+          ]
+        },
+        {
+          "name": "RouteCreatePage",
+          "pattern": "CreateInfo",
+          "target": ["TargetCreatePage"]
+        },
+        {
+          "name": "RouteEditPage",
+          "pattern": "EditInfo/{data}",
+          "target": ["TargetEditPage"]
+        },
+        {
+          "name": "RouteEditInfoPage",
+          "pattern": "EditInfoChg/{data}",
+          "target": ["TargetEditInfoPage"]
+        },
+        {
+          "name": "RouteLocalService",
+          "path": "/localService/",
+          "target": {
+            "type": "local",
+            "entryPath": "webapp/localService"
+          },
+          "description": "Static local service folder"
+        },
+        {
+          "name": "RouteApplication",
+          "path": "/",
+          "target": {
+            "type": "application",
+            "name": "sapips.training.employeeapp"
+          },
+          "description": "Application root"
+        }
+      ],
+      "targets": {
+        "TargetEmployeeList": {
+          "id": "EmployeeList",
+          "name": "EmployeeList"
+        },
+        "TargetCreatePage": {
+            "viewId": "CreateInfo",
+            "viewName": "CreateInfo"
+        },
+        "TargetEditPage": {
+            "viewId": "EditInfo",
+            "viewName": "EditInfo"
+        },
+        "TargetEditInfoPage": {
+            "viewId": "EditInfoChg",
+            "viewName": "EditInfoChg",
+            "viewLevel": 2
+        }
+      }
+    },
+    "rootView": {
+      "viewName": "sapips.training.employeeapp.view.App",
+      "type": "XML",
+      "id": "App",
+      "async": true
+    }
+  }
+}

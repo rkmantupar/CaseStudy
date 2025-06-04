@@ -1,0 +1,62 @@
+<mvc:View controllerName="sapips.training.employeeapp.controller.EmployeeList" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:form="sap.ui.layout.form">
+    <Page id="EmployeeList" title="{i18n>title}">
+        <Panel id="idPanel1" headerText="{i18n>employees}" class="sapUiResponsiveMargin" width="auto">
+            <VBox id="idVBoxSelector"> 
+                <!--<Table id="idTableEmployees" inset="false" showSeparators="Inner" headerText="{i18n>employees}"
+                         items="{path: 'Northwind>/Employees', sorter:{path: 'EmployeeID'}}" mode="MultiSelect" selectionChange="onSelectProduct"> -->
+                <Table id="idTableEmployees" inset="false" showSeparators="Inner" headerText="{i18n>employees}"
+                         items="{Northwind>/Employees}" mode="MultiSelect" selectionChange="onSelectProduct">
+                    <headerToolbar>
+                        <Toolbar id="idToolbar">
+                            <ToolbarSpacer id="idToolbarSpacer" />
+                            <SearchField id="idSearchField" width="30%" search=".onFilterProduct"/>
+                            <Button id="idButtonAdd" text="{i18n>add}" press="onPressAdd" class="customAddButton"/>
+                            <Button id="idButtonDel" text="{i18n>delete}" press="onPressDelete" class="customDeleteButton"/>
+                        </Toolbar>
+                    </headerToolbar>
+                    
+                    <columns>
+                        <Column id="idColumnEmpId" minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
+                            <Text id="idTextEmpId" text="{i18n>employeeId}" />
+                        </Column>
+                        <Column id="idColumnFirstName" minScreenWidth="Tablet" demandPopin="true">
+                            <Text id="idTextFirstName" text="{i18n>firstName}" />
+                        </Column>
+                        <Column id="idColumnLastName" minScreenWidth="Tablet" demandPopin="true">
+                            <Text id="idTextLastName" text="{i18n>lastName}" />
+                        </Column>
+                        <Column id="idColumnAge" minScreenWidth="Tablet" demandPopin="true">
+                            <Text id="idTextAge" text="{i18n>age}" />
+                        </Column>
+                        <Column id="idColumnDateOfHire" minScreenWidth="Tablet" demandPopin="true">
+                            <Text id="idTextDateOfHire" text="{i18n>dateOfHire}" />
+                        </Column>
+                        <Column id="idColumnCareerLevel" minScreenWidth="Tablet" demandPopin="true">
+                            <Text id="idTextCareerLevel" text="{i18n>careerLevel}" />
+                        </Column>
+                        <Column id="idColumnCurrentProject" minScreenWidth="Tablet" demandPopin="true">
+                            <Text id="idTextCurrentProject" text="{i18n>currentProject}" />
+                        </Column>
+                    </columns>
+
+                    <items>
+                        <ColumnListItem id="idColumnListItem">
+                            <cells>
+                                <ObjectIdentifier id="idObjIdEmpId" title="{Northwind>EmployeeID}"/>
+                                <ObjectIdentifier id="idObjIdFtName" title="{Northwind>FirstName}"/>
+                                <ObjectIdentifier id="idObjIdLtName" title="{Northwind>LastName}"/>
+                                <ObjectIdentifier id="idObjIdAge" title="{Northwind>Age}"/>
+                                <ObjectIdentifier id="idObjIdDateHire" title="{Northwind>DateHire}"/>
+                                <ObjectIdentifier id="idObjIdCareerLvl" title="{Northwind>CareerLevel}"/>
+                                <HBox id="idHBox" justifyContent="SpaceBetween" alignItems="Center">
+                                    <ObjectIdentifier id="idObjIdCurrProj" title="{Northwind>CurrentProject}"/>
+                                    <Button id="idButtonNav" icon="sap-icon://navigation-right-arrow" press="onPressEmpInfo"/>
+                                </HBox>
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+            </VBox>
+        </Panel>
+    </Page>
+</mvc:View>

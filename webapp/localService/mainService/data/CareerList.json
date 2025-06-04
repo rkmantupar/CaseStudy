@@ -1,0 +1,54 @@
+[
+    {
+        "CareerId": "C001",
+        "CareerLevel": "01"
+    },
+    {
+        "CareerId": "C002",
+        "CareerLevel": "02"
+    },
+    {
+        "CareerId": "C003",
+        "CareerLevel": "03"
+    },
+    {
+        "CareerId": "C004",
+        "CareerLevel": "04"
+    },
+    {
+        "CareerId": "C005",
+        "CareerLevel": "05"
+    },
+    {
+        "CareerId": "C006",
+        "CareerLevel": "06"
+    },
+    {
+        "CareerId": "C007",
+        "CareerLevel": "07"
+    },
+    {
+        "CareerId": "C008",
+        "CareerLevel": "08"
+    },
+    {
+        "CareerId": "C009",
+        "CareerLevel": "09"
+    },
+    {
+        "CareerId": "C010",
+        "CareerLevel": "10"
+    },
+    {
+        "CareerId": "C011",
+        "CareerLevel": "11"
+    },
+    {
+        "CareerId": "C012",
+        "CareerLevel": "12"
+    },
+    {
+        "CareerId": "C013",
+        "CareerLevel": "13"
+    }
+]

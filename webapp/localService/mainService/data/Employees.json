@@ -1,0 +1,21 @@
+[
+    {
+        "EmployeeID": "E001",
+        "FirstName": "Alice",
+        "LastName": "Smith",
+        "Age": 30,
+        "DateHire": "/Date(1625097600000)/",
+        "CareerLevel": "03",
+        "CurrentProject": "Project Alpha"
+    },
+    {
+        "EmployeeID": "E002",
+        "FirstName": "Bob",
+        "LastName": "Jones",
+        "Age": 25,
+        "DateHire": "/Date(1656633600000)/",
+        "CareerLevel": "02",
+        "CurrentProject": "Project Beta"
+    }
+   
+]

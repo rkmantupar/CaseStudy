@@ -1,0 +1,125 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:form="sap.ui.layout.form" controllerName="sapips.training.employeeapp.controller.EditInfoChg">
+    <Page id="EditInfoPage" floatingFooter="true" class="customHeaderFooter">
+        <customHeader>
+            <Bar id="idBarEditInfoPage">
+                <contentLeft>
+                    <Button id="idContentLeftButton3" icon="sap-icon://nav-back" press="onPressBack" />
+                </contentLeft>
+                
+                <contentMiddle>
+                    <Title id="idContentMiddleButton3" text="{i18n>createTitle}" />
+                </contentMiddle>
+            </Bar>
+        </customHeader>
+
+        <headerContent>
+            <Button id="idBtnBack4" text="{i18n>backBtn}" tooltip="{i18n>backTooltip}" press="onPressBack" class="customButtonTextColor"/>
+        </headerContent>
+
+        <Panel id="idPanelCreateEmployee1" headerText="{i18n>empInfo}" class="sapUiResponsiveMargin" width="auto">
+            <form:SimpleForm id="idSimpleFormEmployee1" editable="true">
+                <Label id="idLableEmployeeIdX" text="{i18n>employeeId}" />
+                <Input id="idInputEmployeeIdX" value="{EmpEditModel>/EmployeeID}" maxLength="50" required="false" editable="false" />
+
+                <Label id="idLableFirstNameX" text="{i18n>firstName}" />
+                <Input id="idInputFirstNameX" value="{EmpEditModel>/FirstName}" maxLength="32" required="true" placeholder="{i18n>enterValue}"/>
+
+                <Label id="idLableLastNameX" text="{i18n>lastName}"/>
+                <Input id="idInputLastNameX" value="{EmpEditModel>/LastName}" maxLength="32" required="true" placeholder="{i18n>enterValue}" liveChange="onLetterInputLiveChange"/>
+                
+                <Label id="idLableAgeX" text="{i18n>age}"/>
+                <Input id="idInputAgeX" value="{EmpEditModel>/Age}"  maxLength="2" required="true" placeholder="{i18n>enterValue}" liveChange="onNumberInputLiveChange"/>
+
+                <Label id="idLableDateOfHireX" text="{i18n>dateOfHire}"/>
+                <DatePicker id="idDatePickerDateOfHireX" value="{path: 'EmpEditModel>/DateHire', type: 'sap.ui.model.type.Date', formatOptions: { style: 'medium' }}" required="true" displayFormat="yyyy-MM-dd" valueFormat="yyyy-MM-dd" placeholder="{i18n>enterValue}" change="onDateChange"/>
+
+                <Label id="idLableCareerLevelX" text="{i18n>careerLevel}"/>
+                <ComboBox id="idComboBoxCareerLevelX" items="{Northwind>/CareerList}" selectedKey="{EmpEditModel>/CareerLevel}" placeholder="{i18n>enterValue}" required="true">
+                    <core:Item id="idItemCareerLevelX" key="{Northwind>CareerLevel}" text="{Northwind>CareerLevel}" />
+                </ComboBox>
+
+                <Label id="idLableCurrentProjectX" text="{i18n>currentProject}"/>
+                <ComboBox id="idComboBoxCurrentProjectX" items="{Northwind>/ProjectList}" selectedKey="{EmpEditModel>/CurrentProject}" required="true" placeholder="{i18n>enterValue}">
+                    <core:Item id="idItemCurrentProjectX" key="{Northwind>ProjectName}" text="{Northwind>ProjectName}" />
+                </ComboBox>
+
+            </form:SimpleForm>
+        </Panel>
+
+        <Panel id="idPanelAddSkills1" class="sapUiResponsiveMargin" width="auto">
+            <headerToolbar>
+                <Toolbar id="idToolBar3">
+                    <Title id="idTitleSkills3" text="{i18n>skills}" />
+                    <ToolbarSpacer id="idToolBarSpace4"/>
+                    <Button id="idButtonAddSkill3" text="{i18n>add}" press="onPressAddSkill" class="customAddButton"/>
+                    <Button id="idButtonDelSkill3" text="{i18n>delete}" press="onPressDelSkill" class="customDeleteButton"/>
+                </Toolbar>
+            </headerToolbar>
+            
+            <VBox id="idVBoxSkills1" class="sapUiSmallMargin">
+                <!-- Responsive Table -->
+                <Table id="skillsTable1" mode="MultiSelect" items="{/skills}" class="sapUiResponsiveMargin" growing="true">
+
+                <columns>
+                    <Column id="idColumnSkill1">
+                        <Text id="idTextSkill1" text="Skill" />
+                    </Column>
+                    <Column id="idColumnProficiency1">
+                        <Text id="idTextProficiency1" text="Proficiency" />
+                    </Column>
+                </columns>
+
+                <items>
+                    <ColumnListItem id="idColumnListItemSkillProf1">
+                        <cells>
+                            <Text id="idTextSkill3" text="{skill}" />
+                            <Text id="idTextProficiency3" text="{proficiency}" />
+                        </cells>
+                    </ColumnListItem>
+                </items>
+                </Table>
+
+            </VBox>
+
+            <!-- Add Skill Dialog -->
+            <Dialog id="addSkillDialog1" title="Add Skill" draggable="true" resizable="true" contentWidth="300px" contentHeight="auto" >
+
+                <VBox id="idVboxSkillProf1" class="sapUiSmallMargin">
+                    <Label id="idLabelSkill1" text="Skill" />
+                    <ComboBox id="skillInput1" placeholder="Select Skill">
+                        <items>
+                        <core:Item id="idCoreItemJs1" text="JavaScript" key="JavaScript" />
+                        <core:Item id="idCoreItemSapUi51" text="SAPUI5" key="SAPUI5" />
+                        <core:Item id="idCoreItemHtml1" text="HTML" key="HTML" />
+                        <core:Item id="idCoreItemCss1" text="CSS" key="CSS" />
+                        </items>
+                    </ComboBox>
+
+                    <Label id="idLabelProficiency1" text="Proficiency" />
+                    <ComboBox id="proficiencyInput1" placeholder="Select Proficiency">
+                        <items>
+                        <core:Item id="idCoreItemBeginner1" text="Beginner" key="Beginner" />
+                        <core:Item id="idCoreItemIntermediate1" text="Intermediate" key="Intermediate" />
+                        <core:Item id="idCoreItemAdvanced1" text="Advanced" key="Advanced" />
+                        </items>
+                    </ComboBox>
+                </VBox>
+
+                <beginButton>
+                    <Button id="idButtonSaveSkillProf1" text="Save" press="onDialogSave" type="Emphasized" />
+                </beginButton>
+                <endButton>
+                    <Button id="idButtonCanSkillProf1" text="Cancel" press="onDialogCancel" />
+                </endButton>
+            </Dialog>
+        </Panel>
+        
+        <footer>
+            <OverflowToolbar id="idOFTFooterReview1">
+                <ToolbarSpacer id="idTSpacerFooterReview1"/>
+                <Button id="idBtnSave1" type="Default" text="{i18n>saveBtn}" press="onPressSave" class="customSaveButton"/>
+                <Button id="idBtnCanc1" text="{i18n>cancBtn}" press="onPressCanc" class="customCancelButton"/>
+            </OverflowToolbar>
+        </footer>
+    </Page>
+</mvc:View>

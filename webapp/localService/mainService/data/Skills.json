@@ -1,0 +1,16 @@
+[
+    {
+        "EmployeeID": "E001",
+        "SkillId": "S001",
+        "ProficiencyID": "P1",
+        "SkillName": "JavaScript",
+        "ProficiencyLevel": "L3"
+    },
+    {
+        "EmployeeID": "E002",
+        "SkillId": "S002",
+        "ProficiencyID": "P2",
+        "SkillName": "Python",
+        "ProficiencyLevel": "L2"
+    }
+]

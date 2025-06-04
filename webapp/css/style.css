@@ -1,0 +1,67 @@
+/*Add Button*/
+.customAddButton .sapMBtnInner {
+    color: blue !important;           /* Pink text */
+    background-color: white !important; /* Light pink background */
+    border: 1px solid white !important;
+    border-radius: 4px !important;
+}
+
+/*Cancel Button*/
+.customCancelButton {
+    background-color: white !important; /* Teal */
+    color: blue !important;
+    border: none !important;
+}
+
+.customCancelButton:hover {
+    background-color: white !important; /* Darker on hover */
+}
+
+/*Delete Button*/
+.customDeleteButton .sapMBtnInner {
+    color: #e91e63 !important;           
+    background-color: white !important; 
+    border: 1px solid #e91e63 !important;
+    border-radius: 4px !important;
+}
+
+/*Save Button*/
+.customSaveButton .sapMBtnInner {
+    color: white !important;           
+    background-color: blue !important; 
+    border: 1px solid white !important;
+    border-radius: 4px !important;
+}
+
+/*Custom Text*/
+.bigText {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: black !important;
+  }
+
+.smallText {
+font-size: 15px;
+font-weight: lighter;
+color: black !important;
+}
+
+.smallLabelInfo{
+    font-size: 13px;
+    font-weight: bold;
+    color: rgba(0, 0, 0, 0.603) !important;
+}
+
+.smallTextInfo{
+    font-size: 10px;
+    font-weight: lighter;
+    color: black !important;
+}
+
+/*Info Navigator Button*/
+.customInfoNavButton .sapMBtnInner {
+    color: dodgerblue !important;
+    border: 1px solid white !important;
+    border-radius: 4px !important;
+}

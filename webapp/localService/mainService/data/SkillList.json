@@ -1,0 +1,42 @@
+[
+    {
+        "SkillId": "S001",
+        "SkillName": "JavaScript"
+    },
+    {
+        "SkillId": "S002",
+        "SkillName": "Python"
+    },
+    {
+        "SkillId": "S003",
+        "SkillName": "Java"
+    },
+    {
+        "SkillId": "S004",
+        "SkillName": "C++"
+    },
+    {
+        "SkillId": "S005",
+        "SkillName": "SQL"
+    },
+    {
+        "SkillId": "S006",
+        "SkillName": "HTML"
+    },
+    {
+        "SkillId": "S007",
+        "SkillName": "CSS"
+    },
+    {
+        "SkillId": "S008",
+        "SkillName": "React"
+    },
+    {
+        "SkillId": "S009",
+        "SkillName": "Angular"
+    },
+    {
+        "SkillId": "S010",
+        "SkillName": "Node.js"
+    }
+]

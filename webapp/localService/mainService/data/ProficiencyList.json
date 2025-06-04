@@ -1,0 +1,22 @@
+[
+    {
+        "ProficiencyId": "P001",
+        "ProficiencyLevel": "P1"
+    },
+    {
+        "ProficiencyId": "P002",
+        "ProficiencyLevel": "P2"
+    },
+    {
+        "ProficiencyId": "P003",
+        "ProficiencyLevel": "P3"
+    },
+    {
+        "ProficiencyId": "P004",
+        "ProficiencyLevel": "P4"
+    },
+    {
+        "ProficiencyId": "P005",
+        "ProficiencyLevel": "P5"
+    }
+]
