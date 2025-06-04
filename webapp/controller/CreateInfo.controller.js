@@ -176,7 +176,7 @@ sap.ui.define([
 
         var sSkillId = oSkillCombo.getSelectedKey();
         var sSkillName = oSkillCombo.getSelectedItem()?.getText(); // Use optional chaining
-      
+
         var sProficiencyId = oProficiencyCombo.getSelectedKey();
         var sProficiencyLevel = oProficiencyCombo.getSelectedItem()?.getText();
 
@@ -205,7 +205,7 @@ sap.ui.define([
           proficiencyId: sProficiencyId,
           proficiencyLevel: sProficiencyLevel
         });
-        
+
         oModel.setProperty("/skills", aSkills);
         this.byId("addSkillDialog").close();
         MessageToast.show("Skill added.");
@@ -254,8 +254,14 @@ sap.ui.define([
           return;
         }
 
+        //Generate automatically Employee ID
+        var oToday = new Date();
+        var sDay = String(oToday.getDate()).padStart(2, '0');
+        var sMonth = String(oToday.getMonth() + 1).padStart(2, '0');
+        var sEmployeeId = "EMP" + sLastName + sFirstName + sDay + sMonth;
+
         var oNewEmployee = {
-          //EmployeeID: 
+          EmployeeID: sEmployeeId,
           FirstName: sFirstName,
           LastName: sLastName,
           Age: sAge,
