@@ -162,7 +162,6 @@ sap.ui.define([
         // Reset dialog fields
         this.byId("skillInput").setSelectedKey("");
         this.byId("proficiencyInput").setSelectedKey("");
-
         this.byId("addSkillDialog").open();
       },
 
@@ -175,7 +174,7 @@ sap.ui.define([
         var oProficiencyCombo = this.byId("proficiencyInput");
 
         var sSkillId = oSkillCombo.getSelectedKey();
-        var sSkillName = oSkillCombo.getSelectedItem()?.getText(); // Use optional chaining
+        var sSkillName = oSkillCombo.getSelectedItem()?.getText();
 
         var sProficiencyId = oProficiencyCombo.getSelectedKey();
         var sProficiencyLevel = oProficiencyCombo.getSelectedItem()?.getText();
@@ -188,9 +187,9 @@ sap.ui.define([
         var oModel = this.getView().getModel();
         var aSkills = oModel.getProperty("/skills") || [];
 
-        // Optionally prevent duplicates
+        // Check for duplicates by skillId
         var bExists = aSkills.some(function (item) {
-          return item.skill === sSkill;
+          return item.skill === sSkillId;
         });
 
         if (bExists) {
@@ -207,6 +206,10 @@ sap.ui.define([
         });
 
         oModel.setProperty("/skills", aSkills);
+
+        // Reset fields and close dialog
+        oSkillCombo.setSelectedKey("");
+        oProficiencyCombo.setSelectedKey("");
         this.byId("addSkillDialog").close();
         MessageToast.show("Skill added.");
       },
@@ -258,7 +261,7 @@ sap.ui.define([
         var oToday = new Date();
         var sDay = String(oToday.getDate()).padStart(2, '0');
         var sMonth = String(oToday.getMonth() + 1).padStart(2, '0');
-        var sEmployeeId = "EMP" + sLastName + sFirstName + sDay + sMonth;
+        var sEmployeeId = "EmployeeID" + sLastName + sFirstName + sDay + sMonth;
 
         var oNewEmployee = {
           EmployeeID: sEmployeeId,
@@ -295,8 +298,12 @@ sap.ui.define([
 
               oNorthwindModel.create("/Skills", oSkillData, {
                 success: function () {
-                  var oRouter = that.getOwnerComponent().getRouter();
-                  oRouter.navTo("RouteEmployeeList");
+                  iSuccessCount++;
+                  if (iSuccessCount === iTotalSkills) {
+                    // Only navigate once all skills are added
+                    var oRouter = that.getOwnerComponent().getRouter();
+                    oRouter.navTo("RouteEmployeeList");
+                  }
                 },
                 error: function () {
                   MessageBox.error("Error saving skill: " + skill.skill);
