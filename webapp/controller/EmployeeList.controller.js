@@ -48,23 +48,49 @@ sap.ui.define([
         return;
       }
 
-      // Optional: confirm deletion
       MessageBox.confirm("Are you sure you want to delete selected employees?", {
         onClose: function (sAction) {
           if (sAction === "OK") {
             aSelectedItems.forEach(function (oItem) {
-              var sPath = oItem.getBindingContext("Northwind").getPath(); // e.g., /Employees(1)
-              oModel.remove(sPath, {
-                success: function () {
-                  MessageToast.show("Deleted successfully");
+              var oContext = oItem.getBindingContext("Northwind");
+              var sPath = oContext.getPath();
+              var oData = oContext.getObject();
+              var sEmployeeId = oData.EmployeeID;
+
+              // 1. First delete related Skills
+              var sSkillFilterPath = "/Skills?$filter=EmployeeID eq '" + sEmployeeId + "'";
+              oModel.read(sSkillFilterPath, {
+                success: function (oSkillData) {
+                  var aSkills = oSkillData.results || [];
+                  aSkills.forEach(function (skill) {
+                    var sSkillPath = "/Skills(EmployeeID='" + skill.EmployeeID + "',SkillId='" + skill.SkillId + "')";
+                    oModel.remove(sSkillPath, {
+                      success: function () {
+                        console.log("Deleted skill:", sSkillPath);
+                      },
+                      error: function () {
+                        console.warn("Failed to delete skill:", sSkillPath);
+                      }
+                    });
+                  });
+
+                  // 2. After deleting skills, delete the employee
+                  oModel.remove(sPath, {
+                    success: function () {
+                      MessageToast.show("Employee deleted successfully.");
+                      oTable.removeSelections();
+                    },
+                    error: function () {
+                      MessageToast.show("Error deleting employee.");
+                    }
+                  });
+
                 },
                 error: function () {
-                  MessageToast.show("Error during deletion");
+                  MessageBox.error("Failed to fetch related skills for deletion.");
                 }
               });
             });
-
-            oTable.removeSelections();
           }
         }
       });
@@ -84,7 +110,7 @@ sap.ui.define([
       var oSelectedItem = oEvent.getSource().getParent().getParent(); // Button → HBox → ColumnListItem
       var oContext = oSelectedItem.getBindingContext("Northwind");
       var oData = oContext.getObject();
-    
+
       // Pass the data as a JSON string (encode it)
       var oRouter = this.getOwnerComponent().getRouter();
       oRouter.navTo("RouteEditPage", {

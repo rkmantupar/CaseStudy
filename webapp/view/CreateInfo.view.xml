@@ -71,8 +71,8 @@
                 <items>
                     <ColumnListItem id="idColumnListItemSkillProf">
                         <cells>
-                            <Text id="idTextSkill2" text="{skill}" />
-                            <Text id="idTextProficiency2" text="{proficiency}" />
+                            <Text id="idTextSkill2" text="{skillName}" />
+                            <Text id="idTextProficiency2" text="{proficiencyLevel}" />
                         </cells>
                     </ColumnListItem>
                 </items>

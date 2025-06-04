@@ -171,10 +171,16 @@ sap.ui.define([
       },
 
       onDialogSave: function () {
-        var sSkill = this.byId("skillInput").getSelectedKey();
-        var sProficiency = this.byId("proficiencyInput").getSelectedKey();
+        var oSkillCombo = this.byId("skillInput");
+        var oProficiencyCombo = this.byId("proficiencyInput");
 
-        if (!sSkill || !sProficiency) {
+        var sSkillId = oSkillCombo.getSelectedKey();
+        var sSkillName = oSkillCombo.getSelectedItem()?.getText(); // Use optional chaining
+      
+        var sProficiencyId = oProficiencyCombo.getSelectedKey();
+        var sProficiencyLevel = oProficiencyCombo.getSelectedItem()?.getText();
+
+        if (!sSkillId || !sProficiencyId) {
           MessageToast.show("Please select both skill and proficiency.");
           return;
         }
@@ -193,9 +199,14 @@ sap.ui.define([
         }
 
         // Add new skill
-        aSkills.push({ skill: sSkill, proficiency: sProficiency });
+        aSkills.push({
+          skillId: sSkillId,
+          skillName: sSkillName,
+          proficiencyId: sProficiencyId,
+          proficiencyLevel: sProficiencyLevel
+        });
+        
         oModel.setProperty("/skills", aSkills);
-
         this.byId("addSkillDialog").close();
         MessageToast.show("Skill added.");
       },
@@ -236,7 +247,6 @@ sap.ui.define([
         var sAge = parseInt(oView.byId("idInputAge").getValue().trim(), 10);
         var sCareerLevel = oView.byId("idComboBoxCareerLevel").getSelectedKey();
         var sCurrentProject = oView.byId("idComboBoxCurrentProject").getSelectedKey();
-        //var oDate = oView.byId("idDatePickerDateOfHire").getDateValue();
         var sDate = oView.byId("idDatePickerDateOfHire").getDateValue();
 
         if (!sFirstName || !sLastName || isNaN(sAge) || !sCareerLevel || !sCurrentProject || !sDate) {
@@ -251,11 +261,8 @@ sap.ui.define([
           Age: sAge,
           CareerLevel: sCareerLevel,
           CurrentProject: sCurrentProject,
-          //DateHire: oDate.toISOString() // Format date to string
           DateHire: sDate,
         };
-
-        //console.log("New Employee Payload:", oNewEmployee);
 
         // Call create method on OData model
         var that = this;
@@ -271,30 +278,37 @@ sap.ui.define([
             // Loop over each skill and create on backend linked to new employee
             aSkills.forEach(function (skill) {
               var oSkillData = {
-                EmployeeID: sEmployeeId,    // Link to employee
-                Skill: skill.skill,
-                Proficiency: skill.proficiency
+                EmployeeID: sEmployeeId,
+                SkillId: skill.skillId,
+                SkillName: skill.skillName,
+                ProficiencyID: skill.proficiencyId,
+                ProficiencyLevel: skill.proficiencyLevel
               };
 
-              oNorthwindModel.create("/SkillsSet", oSkillData, {
+              console.log("Posting skill data:", oSkillData);
+
+              oNorthwindModel.create("/Skills", oSkillData, {
                 success: function () {
-                  // skill saved - optionally handle feedback
+                  var oRouter = that.getOwnerComponent().getRouter();
+                  oRouter.navTo("RouteEmployeeList");
                 },
                 error: function () {
                   MessageBox.error("Error saving skill: " + skill.skill);
+                  console.error("Error saving skill:", skill.skill, oError);
                 }
               });
             });
 
-            var oRouter = this.getOwnerComponent().getRouter();
-                oRouter.navTo("RouteEmployeeList");
-              }.bind(this),
-                error: function (oError) {
-                  MessageBox.error("Error creating employee.");
-                  console.error(oError);
-                }
-        });
+            //var oRouter = this.getOwnerComponent().getRouter();
+            //oRouter.navTo("RouteEmployeeList");
+          }.bind(this),
+          error: function (oError) {
+            MessageBox.error("Error creating employee.");
+            console.error(oError);
           }
-
         });
-      });
+
+      }
+
+    });
+  });

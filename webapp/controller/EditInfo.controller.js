@@ -29,13 +29,34 @@ sap.ui.define([
                 this.getView().setModel(oEmpModel, "empModel");
 
                 // 3. Load Skills.json
-                var oSkillsModel = new sap.ui.model.json.JSONModel();
+                /* var oSkillsModel = new sap.ui.model.json.JSONModel();
                 var sSkillsPath = "/localService/mainService/data/Skills.json";
-                console.log("Loading Skills JSON from:", sSkillsPath);
+                console.log("Loading Skills JSON from:", sSkillsPath); 
 
-                oSkillsModel.loadData(sSkillsPath);
+                oSkillsModel.loadData(sSkillsPath);*/
+                var oODataModel = this.getOwnerComponent().getModel("Northwind");
+                var sEmployeeID = oDecodedData.EmployeeID;
+
+                // Filter skills by EmployeeID using OData read
+                oODataModel.read("/Skills", {
+                    filters: [new sap.ui.model.Filter("EmployeeID", "EQ", sEmployeeID)],
+                    success: function (oData) {
+                        var oSkillsModel = new JSONModel(oData.results);
+                        this.getView().setModel(oSkillsModel, "skillsModel");
+                        console.log("Loaded skills from backend:", oData.results);
+                    }.bind(this),
+                    error: function (oError) {
+                        console.error("Failed to load skills from backend", oError);
+                        MessageBox.error("Unable to load skills.");
+                    }
+                });
 
                 // 4. Wait for skills to load, then filter by employee
+                    // Clear old model if it exists
+                if (this.getView().getModel("skillsModel")) {
+                    this.getView().getModel("skillsModel").setData([]); // clear old data
+                }
+                
                 oSkillsModel.attachRequestCompleted(function () {
                     var aAllSkills = oSkillsModel.getData(); // expecting array directly, or wrap it
 
