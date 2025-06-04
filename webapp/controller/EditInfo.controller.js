@@ -52,11 +52,11 @@ sap.ui.define([
                 });
 
                 // 4. Wait for skills to load, then filter by employee
-                    // Clear old model if it exists
+                // Clear old model if it exists
                 if (this.getView().getModel("skillsModel")) {
                     this.getView().getModel("skillsModel").setData([]); // clear old data
                 }
-                
+
                 oSkillsModel.attachRequestCompleted(function () {
                     var aAllSkills = oSkillsModel.getData(); // expecting array directly, or wrap it
 
@@ -114,16 +114,23 @@ sap.ui.define([
                 //this.getOwnerComponent().getRouter().navTo("RouteEditInfoPage", {
                 //  data: encodeURIComponent(JSON.stringify(oData))
 
-                var oData = this.getView().getModel("empModel").getData();
-                // Add leading zero for CareerLevel if single digit
+                ////var oData = this.getView().getModel("empModel").getData();
 
+                //this.getOwnerComponent().getRouter().navTo("RouteEditInfoPage", {
+                //    data: encodeURIComponent(JSON.stringify(oData))
+
+                var oEmpData = this.getView().getModel("empModel").getData();
+                var aSkillsData = this.getView().getModel("skillsModel")?.getData() || [];
+
+                var oCombinedData = {
+                    employee: oEmpData,
+                    skills: aSkillsData
+                };
+
+                // Navigate and pass data
                 this.getOwnerComponent().getRouter().navTo("RouteEditInfoPage", {
-                    data: encodeURIComponent(JSON.stringify(oData))
+                    data: encodeURIComponent(JSON.stringify(oCombinedData))
                 });
-
             }
-
-
-
         });
     });

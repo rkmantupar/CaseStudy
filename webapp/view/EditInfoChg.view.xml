@@ -57,9 +57,10 @@
             </headerToolbar>
             
             <VBox id="idVBoxSkills1" class="sapUiSmallMargin">
-                <!-- Responsive Table -->
-                <Table id="skillsTable1" mode="MultiSelect" items="{/skills}" class="sapUiResponsiveMargin" growing="true">
+                <!-- Responsive Table
+                <Table id="skillsTable1" mode="MultiSelect" items="{/skills}" class="sapUiResponsiveMargin" growing="true"> -->
 
+                <Table id="skillsTable1" mode="MultiSelect" items="{SkillsEditModel>/skills}" class="sapUiResponsiveMargin" growing="true">
                 <columns>
                     <Column id="idColumnSkill1">
                         <Text id="idTextSkill1" text="Skill" />
@@ -72,8 +73,8 @@
                 <items>
                     <ColumnListItem id="idColumnListItemSkillProf1">
                         <cells>
-                            <Text id="idTextSkill3" text="{skill}" />
-                            <Text id="idTextProficiency3" text="{proficiency}" />
+                            <Text id="idTextSkill3" text="{SkillsEditModel>SkillName}" />
+                            <Text id="idTextProficiency3" text="{SkillsEditModel>ProficiencyLevel}" />
                         </cells>
                     </ColumnListItem>
                 </items>
@@ -86,22 +87,13 @@
 
                 <VBox id="idVboxSkillProf1" class="sapUiSmallMargin">
                     <Label id="idLabelSkill1" text="Skill" />
-                    <ComboBox id="skillInput1" placeholder="Select Skill">
-                        <items>
-                        <core:Item id="idCoreItemJs1" text="JavaScript" key="JavaScript" />
-                        <core:Item id="idCoreItemSapUi51" text="SAPUI5" key="SAPUI5" />
-                        <core:Item id="idCoreItemHtml1" text="HTML" key="HTML" />
-                        <core:Item id="idCoreItemCss1" text="CSS" key="CSS" />
-                        </items>
+                    <ComboBox id="skillInput1" items="{Northwind>/SkillList}" selectedKey="{NewSkillModel>/SkillName}" placeholder="{i18n>enterValue}" required="true">
+                        <core:Item id="idCoreSkillInput1" key="{Northwind>SkillName}" text="{Northwind>SkillName}" />
                     </ComboBox>
 
                     <Label id="idLabelProficiency1" text="Proficiency" />
-                    <ComboBox id="proficiencyInput1" placeholder="Select Proficiency">
-                        <items>
-                        <core:Item id="idCoreItemBeginner1" text="Beginner" key="Beginner" />
-                        <core:Item id="idCoreItemIntermediate1" text="Intermediate" key="Intermediate" />
-                        <core:Item id="idCoreItemAdvanced1" text="Advanced" key="Advanced" />
-                        </items>
+                    <ComboBox id="proficiencyInput1" items="{Northwind>/ProficiencyList}" selectedKey="{NewSkillModel>/ProficiencyLevel}" placeholder="{i18n>enterValue}" required="true">
+                        <core:Item id="idCoreProficiencyInput1" key="{Northwind>ProficiencyLevel}" text="{Northwind>ProficiencyLevel}" />
                     </ComboBox>
                 </VBox>
 
